@@ -33,4 +33,7 @@ def search_users(params):
 
 
 if __name__ == "__main__":
-    print search_users({"q": "drusk"})
+    user_data = search_users({"q": "location:victoria"})
+
+    for user in user_data["items"]:
+        print user["login"]
