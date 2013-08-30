@@ -32,8 +32,28 @@ def search_users(params):
     return response.json()
 
 
+def query_user(username):
+    response = requests.get(GH_API_URL_BASE + "users/{}".format(username))
+    return response.json()
+
+
+def get_repository_languages(username):
+    response = requests.get(GH_API_URL_BASE + "users/{}/repos".format(username))
+    return [repo["language"] for repo in response.json()]
+
+
 if __name__ == "__main__":
     user_data = search_users({"q": "location:victoria"})
 
-    for user in user_data["items"]:
-        print user["login"]
+    usernames = [user["login"] for user in user_data["items"]]
+
+    print "Got {} usernames".format(len(usernames))
+
+    username = usernames[0]
+    print username
+
+    # print query_user(username)
+
+    languages = set(get_repository_languages(username))
+    print "Repository languages ({})".format(len(languages))
+    print languages
