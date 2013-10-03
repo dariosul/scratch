@@ -15,7 +15,15 @@
 
 char *labels[] = { "Index:", "X:", "Y:", "Z:", "Code:" };
 
-void create_labeled_textfield(Widget *parent, char *label_string) {
+typedef struct {
+	Widget index_widget;
+	Widget x_widget;
+	Widget y_widget;
+	Widget z_widget;
+	Widget code_widget;
+} NodeInfoWidget;
+
+Widget create_labeled_textfield(Widget *parent, char *label_string) {
 	Widget form_widget;
 	Widget label_widget;
 	Widget text_widget;
@@ -47,14 +55,36 @@ void create_labeled_textfield(Widget *parent, char *label_string) {
 	XtManageChild(text_widget);
 
 	XtManageChild(form_widget);
+
+	return text_widget;
 }
 
 void update_callback(Widget widget, XtPointer client_data, XtPointer call_data) {
 	puts("Update was pressed.");
+	NodeInfoWidget *node_info_widget = (NodeInfoWidget *)client_data;
+
+	puts(XmTextFieldGetString(node_info_widget->index_widget));
+	puts(XmTextFieldGetString(node_info_widget->x_widget));
+	puts(XmTextFieldGetString(node_info_widget->y_widget));
+	puts(XmTextFieldGetString(node_info_widget->z_widget));
+	puts(XmTextFieldGetString(node_info_widget->code_widget));
 }
 
 void close_callback(Widget widget, XtPointer client_data, XtPointer call_data) {
 	exit(0);
+}
+
+NodeInfoWidget *create_node_info_widget(Widget *parent) {
+	NodeInfoWidget *node_info_widget;
+
+	node_info_widget = (NodeInfoWidget *)malloc(sizeof(NodeInfoWidget));
+	node_info_widget->index_widget = create_labeled_textfield(parent, "Index:");
+	node_info_widget->x_widget = create_labeled_textfield(parent, "X:");
+	node_info_widget->y_widget = create_labeled_textfield(parent, "Y:");
+	node_info_widget->z_widget = create_labeled_textfield(parent, "Z:");
+	node_info_widget->code_widget = create_labeled_textfield(parent, "Code:");
+
+	return node_info_widget;
 }
 
 int main(int argc, char *argv[]) {
@@ -64,6 +94,7 @@ int main(int argc, char *argv[]) {
 	Widget row_column;
 	Widget update_button;
 	Widget close_button;
+	NodeInfoWidget *node_info_widget;
 	int i;
 
 	void update_callback(Widget, XtPointer, XtPointer);
@@ -76,12 +107,11 @@ int main(int argc, char *argv[]) {
 
 	row_column = XmCreateRowColumn(root_widget, "MainRowCol", NULL, 0);
 
-	for (i = 0; i < XtNumber(labels); i++) {
-		create_labeled_textfield(&row_column, labels[i]);
-	}
+	node_info_widget = create_node_info_widget(&row_column);
 
 	update_button = XmCreatePushButton(row_column, "Update", NULL, 0);
-	XtAddCallback(update_button, XmNactivateCallback, update_callback, NULL);
+	XtAddCallback(update_button, XmNactivateCallback, update_callback,
+			node_info_widget);
 
 	close_button = XmCreatePushButton(row_column, "Close", NULL, 0);
 	XtAddCallback(close_button, XmNactivateCallback, close_callback, NULL);
@@ -92,6 +122,8 @@ int main(int argc, char *argv[]) {
 
 	XtRealizeWidget(root_widget);
 	XtAppMainLoop(app);
+
+	free(node_info_widget);
 
 	return 0;
 }
