@@ -15,6 +15,48 @@
 
 char *labels[] = { "Index:", "X:", "Y:", "Z:", "Code:" };
 
+void create_labeled_textfield(Widget *parent, char *label_string) {
+	Widget form_widget;
+	Widget label_widget;
+	Widget text_widget;
+	Arg args[8];
+	int n = 0;
+
+	XtSetArg(args[n], XmNfractionBase, 10); n++;
+	XtSetArg(args[n], XmNnavigationType, XmNONE); n++;
+	form_widget = XmCreateForm(*parent, "form", args, n);
+
+	n = 0;
+	XtSetArg(args[n], XmNtopAttachment, XmATTACH_FORM); n++;
+	XtSetArg(args[n], XmNbottomAttachment, XmATTACH_FORM); n++;
+	XtSetArg(args[n], XmNleftAttachment, XmATTACH_FORM); n++;
+	XtSetArg(args[n], XmNrightAttachment, XmATTACH_POSITION); n++;
+	XtSetArg(args[n], XmNrightPosition, 3); n++;
+	XtSetArg(args[n], XmNalignment, XmALIGNMENT_END); n++;
+	XtSetArg(args[n], XmNnavigationType, XmNONE); n++;
+	label_widget = XmCreateLabelGadget(form_widget, label_string, args, n);
+	XtManageChild(label_widget);
+
+	n = 0;
+	XtSetArg(args[n], XmNtraversalOn, True); n++;
+	XtSetArg(args[n], XmNleftAttachment, XmATTACH_POSITION); n++;
+	XtSetArg(args[n], XmNleftPosition, 4); n++;
+	XtSetArg(args[n], XmNrightAttachment, XmATTACH_FORM); n++;
+	XtSetArg(args[n], XmNnavigationType, XmTAB_GROUP); n++;
+	text_widget = XmCreateTextField(form_widget, "text", args, n);
+	XtManageChild(text_widget);
+
+	XtManageChild(form_widget);
+}
+
+void update_callback(Widget widget, XtPointer client_data, XtPointer call_data) {
+	puts("Update was pressed.");
+}
+
+void close_callback(Widget widget, XtPointer client_data, XtPointer call_data) {
+	exit(0);
+}
+
 int main(int argc, char *argv[]) {
 
 	XtAppContext app;
@@ -22,12 +64,7 @@ int main(int argc, char *argv[]) {
 	Widget row_column;
 	Widget update_button;
 	Widget close_button;
-	Widget text;
-	Widget form;
-	Widget label;
-	Arg args[8];
 	int i;
-	int n;
 
 	void update_callback(Widget, XtPointer, XtPointer);
 	void close_callback(Widget, XtPointer, XtPointer);
@@ -40,32 +77,7 @@ int main(int argc, char *argv[]) {
 	row_column = XmCreateRowColumn(root_widget, "MainRowCol", NULL, 0);
 
 	for (i = 0; i < XtNumber(labels); i++) {
-		n = 0;
-		XtSetArg(args[n], XmNfractionBase, 10); n++;
-		XtSetArg(args[n], XmNnavigationType, XmNONE); n++;
-		form = XmCreateForm(row_column, "form", args, n);
-
-		n = 0;
-		XtSetArg(args[n], XmNtopAttachment, XmATTACH_FORM); n++;
-		XtSetArg(args[n], XmNbottomAttachment, XmATTACH_FORM); n++;
-		XtSetArg(args[n], XmNleftAttachment, XmATTACH_FORM); n++;
-		XtSetArg(args[n], XmNrightAttachment, XmATTACH_POSITION); n++;
-		XtSetArg(args[n], XmNrightPosition, 3); n++;
-		XtSetArg(args[n], XmNalignment, XmALIGNMENT_END); n++;
-		XtSetArg(args[n], XmNnavigationType, XmNONE); n++;
-		label = XmCreateLabelGadget(form, labels[i], args, n);
-		XtManageChild(label);
-
-		n = 0;
-		XtSetArg(args[n], XmNtraversalOn, True); n++;
-		XtSetArg(args[n], XmNleftAttachment, XmATTACH_POSITION); n++;
-		XtSetArg(args[n], XmNleftPosition, 4); n++;
-		XtSetArg(args[n], XmNrightAttachment, XmATTACH_FORM); n++;
-		XtSetArg(args[n], XmNnavigationType, XmTAB_GROUP); n++;
-		text = XmCreateTextField(form, "text", args, n);
-		XtManageChild(text);
-
-		XtManageChild(form);
+		create_labeled_textfield(&row_column, labels[i]);
 	}
 
 	update_button = XmCreatePushButton(row_column, "Update", NULL, 0);
@@ -82,12 +94,4 @@ int main(int argc, char *argv[]) {
 	XtAppMainLoop(app);
 
 	return 0;
-}
-
-void update_callback(Widget widget, XtPointer client_data, XtPointer call_data) {
-	puts("Update was pressed.");
-}
-
-void close_callback(Widget widget, XtPointer client_data, XtPointer call_data) {
-	exit(0);
 }
