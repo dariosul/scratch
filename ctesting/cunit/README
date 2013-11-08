@@ -1,0 +1,5 @@
+Basic example of using cunit.
+
+cunit must be installed (download source, make, make install).
+
+Build and run test with "make test".
