@@ -32,6 +32,7 @@
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <Compile Include="Hello.cs" />
+    <Compile Include="MainClass.cs" />
+    <Compile Include="Greeter.cs" />
   </ItemGroup>
 </Project>
