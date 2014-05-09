@@ -1,6 +1,6 @@
 CC = g++
 CFLAGS = -Wall
-LDFLAGS = -lglfw3 -lGL -lX11 -lXxf86vm -lXrandr -lXi -lpthread
+LDFLAGS = -lglfw3 -lGL -lGLEW -lX11 -lXxf86vm -lXrandr -lXi -lpthread
 
 build_check: build_check.o
 	$(CC) -o $@ $^ $(LDFLAGS)
