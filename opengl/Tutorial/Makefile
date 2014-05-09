@@ -1,5 +1,5 @@
 CC = g++
-CFLAGS = -Wall
+CFLAGS = -Wall -g
 LDFLAGS = -lglfw3 -lGL -lGLEW -lX11 -lXxf86vm -lXrandr -lXi -lpthread
 
 build_check: build_check.o
@@ -12,3 +12,4 @@ build_check.o: build_check.cpp
 
 clean:
 	rm *.o
+	rm build_check
