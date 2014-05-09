@@ -3,6 +3,7 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 #define GLEW_STATIC
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -16,6 +17,12 @@ GLFWwindow* createWindowAndContext() {
 
 	// Create in windowed mode
 	GLFWwindow* window = glfwCreateWindow(800, 600, "Hello OpenGL", NULL, NULL);
+
+	if (!window) {
+		glfwTerminate();
+		exit(EXIT_FAILURE);
+	}
+
 	glfwMakeContextCurrent(window);
 
 	return window;
