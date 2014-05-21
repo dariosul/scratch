@@ -7,7 +7,7 @@
 #define DEG_TO_RAD 0.017453
 GLfloat theta = 0.0;
 
-void idle()
+void idleCallback()
 {
     theta += 0.01;
     if (theta > 360.0) {
@@ -16,7 +16,7 @@ void idle()
     glutPostRedisplay();
 }
 
-void display()
+void displayCallback()
 {
     // Make sure the window is cleared.
     glClear(GL_COLOR_BUFFER_BIT);
@@ -32,6 +32,13 @@ void display()
     glEnd();
 
     glFlush();
+}
+
+void keyboardCallback(unsigned char key, int x, int y)
+{
+    if (key == 'q') {
+        exit(0);
+    }
 }
 
 void init()
@@ -62,8 +69,10 @@ int main(int argc, char** argv)
  
     glutCreateWindow(argv[0]);
 
-    glutDisplayFunc(display);
-    glutIdleFunc(idle);
+    glutDisplayFunc(displayCallback);
+    glutIdleFunc(idleCallback);
+    glutKeyboardFunc(keyboardCallback);
+
     init();
     
     glutMainLoop();
