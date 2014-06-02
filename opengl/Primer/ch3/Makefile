@@ -7,3 +7,6 @@ spin: spin.c
 
 draw_rect: draw_rect.c
 	$(CC) draw_rect.c -o $@ $(LDFLAGS)
+
+single_double: single_double.c
+	$(CC) $< -o $@ $(LDFLAGS)
