@@ -48,6 +48,19 @@ class HomePageTest(TestCase):
 
         self.assertEqual(Item.objects.count(), 0)
 
+    def test_home_page_displays_all_list_items(self):
+        item1_text = "itemey 1"
+        item2_text = "itemey 2"
+
+        Item.objects.create(text=item1_text)
+        Item.objects.create(text=item2_text)
+
+        response = home_page(HttpRequest())
+
+        response_content = response.content.decode()
+        self.assertIn(item1_text, response_content)
+        self.assertIn(item2_text, response_content)
+
 
 class ItemModelTest(TestCase):
     def test_saving_and_retrieving_items(self):
