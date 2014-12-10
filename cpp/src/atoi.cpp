@@ -12,6 +12,11 @@ int myAtoi(const char *asciiString) {
     for (int i = 0; i < length; i++) {
         int charIndex = length - 1 - i;
 
+        if (charIndex == 0 && asciiString[charIndex] == '-') {
+            integer *= -1;
+            break;
+        }
+
         int digit = asciiString[charIndex] - ASCII_NUMBER_BASE;
 
         integer += pow(10, i) * digit;
