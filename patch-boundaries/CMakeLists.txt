@@ -11,12 +11,13 @@ add_library(libPatch
 
 # Build tests
 
-add_subdirectory(vendor/gtest-1.7.0)
+#add_subdirectory(vendor/gtest)
+add_subdirectory(vendor/gmock)
 enable_testing()
 
 include_directories(
     ${gtest_SOURCE_DIR}/include
-    ${gtest_SOURCE_DIR}
+    ${gmock_SOURCE_DIR}/include
     src
 )
 
@@ -28,7 +29,8 @@ add_executable(patch_test ${TEST_SOURCE_FILES})
 
 target_link_libraries(patch_test
     gtest
-    gtest_main
+    gmock
+    gmock_main
     libPatch
 )
 
