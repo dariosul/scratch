@@ -34,3 +34,15 @@ TEST(BoundaryCalculatorTest, VerticalOffset) {
     EXPECT_THAT(boundaryPoints, ::testing::Contains(Point(1, 1)));
     EXPECT_THAT(boundaryPoints, ::testing::Contains(Point(1, 0)));
 }
+
+TEST(BoundaryCalculatorTest, VerticalAndHorizontalOffset) {
+    BoundaryCalculator underTest;
+    Patch patch1(Point(0, 0), 3);
+    Patch patch2(Point(1, 1), 3);
+
+    std::vector<Point> boundaryPoints = underTest.GetBoundaryPoints(patch1, patch2);
+    EXPECT_EQ(3, boundaryPoints.size());
+    EXPECT_THAT(boundaryPoints, ::testing::Contains(Point(1, 1)));
+    EXPECT_THAT(boundaryPoints, ::testing::Contains(Point(1, 0)));
+    EXPECT_THAT(boundaryPoints, ::testing::Contains(Point(0, 1)));
+}
