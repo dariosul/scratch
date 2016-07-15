@@ -19,5 +19,3 @@ if [ $? -ne 0 ]; then
     echo "Aborting: make failed."
     exit 1
 fi
-
-cp patchboundaries ..
