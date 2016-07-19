@@ -53,7 +53,7 @@ TEST(BoundaryCalculatorTest, VerticalAndHorizontalOffset) {
     underTest.AddPatch(patch2);
     std::vector<Point> boundaryPoints = underTest.GetBoundaryPoints();
     EXPECT_EQ(3, boundaryPoints.size());
-    EXPECT_THAT(boundaryPoints, ::testing::Contains(Point(2, 2)));
-    EXPECT_THAT(boundaryPoints, ::testing::Contains(Point(2, 1)));
     EXPECT_THAT(boundaryPoints, ::testing::Contains(Point(1, 2)));
+    EXPECT_THAT(boundaryPoints, ::testing::Contains(Point(1, 1)));
+    EXPECT_THAT(boundaryPoints, ::testing::Contains(Point(2, 1)));
 }
