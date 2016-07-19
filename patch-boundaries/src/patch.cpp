@@ -21,23 +21,32 @@ bool Patch::Contains(const Point& point) const {
     return point.x <= maxX && point.x >= minX && point.y <= maxY && point.y >= minY;
 }
 
-void BoundaryCalculator::AddPatch(Patch patch) {
-    patches.push_back(patch);
+void BoolMap2D::Set(int x, int y) {
+    map[y][x] = true;
 }
 
-std::vector<Point> BoundaryCalculator::GetBoundaryPoints() {
-    // XXX temporary hack to conform to new API with test cases passing
-    Patch patch2 = patches.back();
-    patches.pop_back();
-    Patch patch1 = patches.back();
+bool BoolMap2D::Test(int x, int y) {
+    return map[y][x];
+}
 
-    std::vector<Point> boundaryPoints;
-
-    for (Point& point : patch1.GetBorderPoints()) {
-        if (patch2.Contains(point)) {
+void BoundaryCalculator::AddPatch(Patch patch) {
+    for (Point& point : patch.GetBorderPoints()) {
+        if (IsInPatchedArea(point)) {
             boundaryPoints.push_back(point);
         }
     }
 
-    return boundaryPoints;
+    AddPatchedArea(patch);
+}
+
+bool BoundaryCalculator::IsInPatchedArea(Point point) {
+    return patchMap.Test(point.x, point.y);
+}
+
+void BoundaryCalculator::AddPatchedArea(Patch patch) {
+    for (int y = patch.GetMinY(); y <= patch.GetMaxY(); ++y) {
+        for (int x = patch.GetMinX(); x <= patch.GetMaxX(); ++x) {
+            patchMap.Set(x, y);
+        }
+    }
 }

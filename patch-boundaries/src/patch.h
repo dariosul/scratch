@@ -21,8 +21,12 @@ public:
         maxY = centre.y + halfLength;
     };
 
-    std::vector<Point> GetBorderPoints();
+    int GetMinX() { return minX; }
+    int GetMaxX() { return maxX; }
+    int GetMinY() { return minY; }
+    int GetMaxY() { return maxY; }
 
+    std::vector<Point> GetBorderPoints();
     bool Contains(const Point& point) const;
 
 private:
@@ -36,16 +40,30 @@ private:
     int maxY;
 };
 
+class BoolMap2D {
+public:
+    BoolMap2D(int width, int height)
+        : map(height, std::vector<bool>(width, false)) {};
+
+    void Set(int x, int y);
+    bool Test(int x, int y);
+
+private:
+    std::vector<std::vector<bool>> map;
+};
+
 class BoundaryCalculator {
 public:
     explicit BoundaryCalculator(int width, int height)
-    : width(width), height(height), patches() {};
+        : patchMap(width, height), boundaryPoints() {};
 
     void AddPatch(Patch patch);
-    std::vector<Point> GetBoundaryPoints();
+    std::vector<Point> GetBoundaryPoints() { return boundaryPoints; };
 
 private:
-    int width;
-    int height;
-    std::vector<Patch> patches;
+    BoolMap2D patchMap;
+    std::vector<Point> boundaryPoints;
+
+    bool IsInPatchedArea(Point point);
+    void AddPatchedArea(Patch patch);
 };
