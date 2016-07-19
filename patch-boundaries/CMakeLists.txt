@@ -1,7 +1,8 @@
 cmake_minimum_required(VERSION 2.8)
 project(patch)
 
-set(CMAKE_CXX_FLAGS "-std=c++11 -g -Wall -Werror")
+set(CMAKE_CXX_FLAGS "-std=c++11 ")
+ #-g -Wall -Werror")
 
 # Build library
 

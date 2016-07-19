@@ -31,7 +31,7 @@ bool BoolMap2D::Test(int x, int y) {
 
 void BoundaryCalculator::AddPatch(Patch patch) {
     for (Point& point : patch.GetBorderPoints()) {
-        if (IsInPatchedArea(point)) {
+        if (!IsInPatchedArea(point)) {
             boundaryPoints.push_back(point);
         }
     }
