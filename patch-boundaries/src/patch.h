@@ -38,5 +38,14 @@ private:
 
 class BoundaryCalculator {
 public:
-    std::vector<Point> GetBoundaryPoints(Patch patch1, Patch patch2);
+    explicit BoundaryCalculator(int width, int height)
+    : width(width), height(height), patches() {};
+
+    void AddPatch(Patch patch);
+    std::vector<Point> GetBoundaryPoints();
+
+private:
+    int width;
+    int height;
+    std::vector<Patch> patches;
 };
